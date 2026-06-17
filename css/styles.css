@@ -66,12 +66,24 @@ a {
     align-items: center;
 }
 
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+.logo-link:hover .logo {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: all 0.3s ease;
 }
 
 .logo i {
