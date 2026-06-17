@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - RoboLife</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-cube"></i> RoboLife
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="hardware.html">Hardware</a></li>
+                <li><a href="software.html">Software</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Get in Touch</h1>
+            <p>We're here to help with your 3D measurement needs</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>Contact Information</h2>
+            <div class="contact-container">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Inquiry Type *</label>
+                        <select id="type" name="type" required>
+                            <option value="">Select an option</option>
+                            <option value="sales">Sales Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="demo">Request Demo</option>
+                            <option value="partnership">Partnership</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Send Message</button>
+                </form>
+
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Headquarters</h4>
+                            <p>123 Innovation Drive<br>Tech Valley, CA 94025<br>United States</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Phone</h4>
+                            <p>+1 (555) 123-4567<br>Monday - Friday, 9am - 6pm PST</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email</h4>
+                            <p><a href="mailto:info@robolife.com" style="color: #0066cc;">info@robolife.com</a><br>
+                            <a href="mailto:support@robolife.com" style="color: #0066cc;">support@robolife.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Business Hours</h4>
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM<br>Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Offices Section -->
+    <section style="padding: 80px 20px; background: #f9f9f9;">
+        <div class="container">
+            <h2>Global Offices</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div style="padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    <h3 style="margin-bottom: 1rem; color: #0066cc;">North America</h3>
+                    <p style="color: #666; margin-bottom: 1rem;">123 Innovation Drive<br>Tech Valley, CA 94025<br>USA</p>
+                    <p style="color: #666; font-size: 0.9rem;"><strong>Phone:</strong> +1 (555) 123-4567</p>
+                </div>
+
+                <div style="padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    <h3 style="margin-bottom: 1rem; color: #0066cc;">Europe</h3>
+                    <p style="color: #666; margin-bottom: 1rem;">Technologiepark 42<br>D-40670 Meerbusch<br>Germany</p>
+                    <p style="color: #666; font-size: 0.9rem;"><strong>Phone:</strong> +49 (211) 987-6543</p>
+                </div>
+
+                <div style="padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);">
+                    <h3 style="margin-bottom: 1rem; color: #0066cc;">Asia Pacific</h3>
+                    <p style="color: #666; margin-bottom: 1rem;">999 Innovation Road<br>Shanghai, 200000<br>China</p>
+                    <p style="color: #666; font-size: 0.9rem;"><strong>Phone:</strong> +86 (21) 5555-6789</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section style="padding: 80px 20px;">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                    <h4 style="color: #0066cc; margin-bottom: 0.5rem;">What file formats do you support?</h4>
+                    <p style="color: #666; font-size: 0.95rem;">We support all major 3D formats including OBJ, FBX, STL, PLY, GLTF, and many more. See our software page for a complete list.</p>
+                </div>
+
+                <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                    <h4 style="color: #0066cc; margin-bottom: 0.5rem;">Do you offer on-site installation and training?</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Yes! We provide comprehensive installation, configuration, and training services for all our hardware and software solutions.</p>
+                </div>
+
+                <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                    <h4 style="color: #0066cc; margin-bottom: 0.5rem;">What level of accuracy can I expect?</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Our hardware achieves sub-millimeter accuracy (±0.1mm absolute, ±0.05mm relative). Actual results depend on object size, material, and environmental conditions.</p>
+                </div>
+
+                <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                    <h4 style="color: #0066cc; margin-bottom: 0.5rem;">Can I integrate your API into my existing system?</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Absolutely! We offer comprehensive API documentation and SDKs for Python, C++, and other languages. Our technical team can assist with custom integration.</p>
+                </div>
+
+                <div style="margin-bottom: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                    <h4 style="color: #0066cc; margin-bottom: 0.5rem;">Do you offer a free trial?</h4>
+                    <p style="color: #666; font-size: 0.95rem;">Yes! We offer 30-day free trials of our software platform. Hardware demos are also available by appointment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Contact our team for personalized assistance with your 3D measurement project</p>
+            <a href="#contactForm" class="btn btn-large">Send a Message Above</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>RoboLife</h4>
+                    <p>Excellence in 3D measurement and reconstruction technology</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 RoboLife. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
