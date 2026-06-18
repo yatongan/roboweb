@@ -13,6 +13,205 @@ window.addEventListener('scroll', () => {
     });
 });
 
+// 3D Viewer for Services Page
+function init3DViewer() {
+    const container = document.getElementById('3d-viewer');
+    if (!container) {
+        console.warn('3D viewer container not found');
+        return;
+    }
+
+    if (!window.THREE) {
+        console.error('Three.js not loaded');
+        return;
+    }
+
+    console.log('Initializing 3D viewer...');
+    console.log('Container dimensions:', container.clientWidth, container.clientHeight);
+
+    // Scene setup
+    const width = container.clientWidth || 300;
+    const height = container.clientHeight || 300;
+    
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a2e);
+    
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    camera.position.z = 2.5;
+    
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(window.devicePixelRatio || 1);
+    renderer.domElement.style.display = 'block';
+    container.appendChild(renderer.domElement);
+
+    console.log('Renderer created, canvas appended to container');
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 5, 7);
+    scene.add(directionalLight);
+    
+    const pointLight = new THREE.PointLight(0x00a3e0, 0.5);
+    pointLight.position.set(-5, 3, 5);
+    scene.add(pointLight);
+
+    // Create a reconstructed object (composite of geometric shapes)
+    const group = new THREE.Group();
+    
+    // Base mesh
+    const baseGeometry = new THREE.IcosahedronGeometry(0.8, 4);
+    const baseMaterial = new THREE.MeshPhongMaterial({
+        color: 0x0066cc,
+        shininess: 100,
+        wireframe: false
+    });
+    const baseMesh = new THREE.Mesh(baseGeometry, baseMaterial);
+    group.add(baseMesh);
+    
+    // Add some detail meshes
+    const detailGeometry = new THREE.TetrahedronGeometry(0.3, 2);
+    const detailMaterial = new THREE.MeshPhongMaterial({
+        color: 0x00a3e0,
+        shininess: 80
+    });
+    
+    const detail1 = new THREE.Mesh(detailGeometry, detailMaterial);
+    detail1.position.set(0.6, 0.6, 0.6);
+    group.add(detail1);
+    
+    const detail2 = new THREE.Mesh(detailGeometry, detailMaterial);
+    detail2.position.set(-0.6, -0.5, 0.7);
+    detail2.scale.set(0.8, 0.8, 0.8);
+    group.add(detail2);
+    
+    // Add wireframe overlay for technical look
+    const wireframeGeometry = new THREE.IcosahedronGeometry(0.82, 4);
+    const wireframeMaterial = new THREE.MeshPhongMaterial({
+        color: 0x00d4ff,
+        wireframe: true,
+        opacity: 0.3,
+        transparent: true
+    });
+    const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
+    group.add(wireframe);
+    
+    scene.add(group);
+
+    console.log('3D objects created and added to scene');
+
+    // Rotation state
+    let mouseDown = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+
+    // Mouse controls
+    renderer.domElement.addEventListener('mousedown', (e) => {
+        mouseDown = true;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    renderer.domElement.addEventListener('mousemove', (e) => {
+        if (mouseDown) {
+            const deltaX = e.clientX - mouseX;
+            const deltaY = e.clientY - mouseY;
+            
+            targetRotationY += deltaX * 0.01;
+            targetRotationX += deltaY * 0.01;
+            
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
+    });
+
+    renderer.domElement.addEventListener('mouseup', () => {
+        mouseDown = false;
+    });
+
+    renderer.domElement.addEventListener('mouseleave', () => {
+        mouseDown = false;
+    });
+
+    // Touch controls
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    renderer.domElement.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
+    renderer.domElement.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        const deltaX = e.touches[0].clientX - touchStartX;
+        const deltaY = e.touches[0].clientY - touchStartY;
+        
+        targetRotationY += deltaX * 0.01;
+        targetRotationX += deltaY * 0.01;
+        
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: false });
+
+    // Zoom controls
+    renderer.domElement.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        
+        if (e.deltaY > 0) {
+            camera.position.z *= 1.1;
+        } else {
+            camera.position.z *= 0.9;
+        }
+        
+        // Limit zoom
+        camera.position.z = Math.max(0.5, Math.min(5, camera.position.z));
+    }, { passive: false });
+
+    // Handle window resize
+    function onWindowResize() {
+        const newWidth = container.clientWidth;
+        const newHeight = container.clientHeight;
+        
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+    }
+
+    window.addEventListener('resize', onWindowResize);
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // Smooth rotation with easing
+        group.rotation.x += (targetRotationX - group.rotation.x) * 0.1;
+        group.rotation.y += (targetRotationY - group.rotation.y) * 0.1;
+        
+        // Auto-rotate if not being dragged (for demo purposes)
+        if (!mouseDown) {
+            targetRotationY += 0.001;
+        }
+        
+        renderer.render(scene, camera);
+    }
+
+    console.log('Starting animation loop...');
+    animate();
+}
+
+// Initialize 3D viewer when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init3DViewer);
+} else {
+    init3DViewer();
+}
+
 // Form submission
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
