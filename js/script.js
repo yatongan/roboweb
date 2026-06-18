@@ -27,74 +27,91 @@ function init3DViewer() {
     }
 
     console.log('Initializing 3D viewer...');
-    console.log('Container dimensions:', container.clientWidth, container.clientHeight);
-
-    // Scene setup
-    const width = container.clientWidth || 300;
-    const height = container.clientHeight || 300;
+    
+    // Force container to have dimensions
+    let width = container.clientWidth;
+    let height = container.clientHeight;
+    
+    console.log('Container dimensions:', width, height);
+    
+    // Fallback to CSS dimensions if not yet calculated
+    if (width === 0) width = 300;
+    if (height === 0) height = 300;
+    
+    console.log('Adjusted dimensions:', width, height);
     
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x1a1a2e);
     
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    camera.position.z = 2.5;
+    camera.position.z = 1.8;  // Moved closer to object
     
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, precision: 'highp' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio || 1);
-    renderer.domElement.style.display = 'block';
+    renderer.setClearColor(0x1a1a2e, 1);
+    
+    // Clear the container and append renderer
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
     container.appendChild(renderer.domElement);
 
-    console.log('Renderer created, canvas appended to container');
+    console.log('Renderer created and appended');
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Lighting - ensure good visibility
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
     
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
     directionalLight.position.set(5, 5, 7);
     scene.add(directionalLight);
     
-    const pointLight = new THREE.PointLight(0x00a3e0, 0.5);
+    const pointLight = new THREE.PointLight(0x00a3e0, 1.0);
     pointLight.position.set(-5, 3, 5);
     scene.add(pointLight);
+
+    console.log('Lights added to scene');
 
     // Create a reconstructed object (composite of geometric shapes)
     const group = new THREE.Group();
     
     // Base mesh
-    const baseGeometry = new THREE.IcosahedronGeometry(0.8, 4);
+    const baseGeometry = new THREE.IcosahedronGeometry(0.6, 4);
     const baseMaterial = new THREE.MeshPhongMaterial({
         color: 0x0066cc,
         shininess: 100,
-        wireframe: false
+        wireframe: false,
+        emissive: 0x001a4d
     });
     const baseMesh = new THREE.Mesh(baseGeometry, baseMaterial);
     group.add(baseMesh);
     
     // Add some detail meshes
-    const detailGeometry = new THREE.TetrahedronGeometry(0.3, 2);
+    const detailGeometry = new THREE.TetrahedronGeometry(0.25, 2);
     const detailMaterial = new THREE.MeshPhongMaterial({
         color: 0x00a3e0,
-        shininess: 80
+        shininess: 80,
+        emissive: 0x004466
     });
     
     const detail1 = new THREE.Mesh(detailGeometry, detailMaterial);
-    detail1.position.set(0.6, 0.6, 0.6);
+    detail1.position.set(0.5, 0.5, 0.5);
     group.add(detail1);
     
     const detail2 = new THREE.Mesh(detailGeometry, detailMaterial);
-    detail2.position.set(-0.6, -0.5, 0.7);
+    detail2.position.set(-0.5, -0.4, 0.5);
     detail2.scale.set(0.8, 0.8, 0.8);
     group.add(detail2);
     
     // Add wireframe overlay for technical look
-    const wireframeGeometry = new THREE.IcosahedronGeometry(0.82, 4);
+    const wireframeGeometry = new THREE.IcosahedronGeometry(0.62, 4);
     const wireframeMaterial = new THREE.MeshPhongMaterial({
         color: 0x00d4ff,
         wireframe: true,
-        opacity: 0.3,
-        transparent: true
+        opacity: 0.4,
+        transparent: true,
+        emissive: 0x006688
     });
     const wireframe = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
     group.add(wireframe);
@@ -143,20 +160,24 @@ function init3DViewer() {
     let touchStartY = 0;
 
     renderer.domElement.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
+        if (e.touches.length > 0) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
     });
 
     renderer.domElement.addEventListener('touchmove', (e) => {
         e.preventDefault();
-        const deltaX = e.touches[0].clientX - touchStartX;
-        const deltaY = e.touches[0].clientY - touchStartY;
-        
-        targetRotationY += deltaX * 0.01;
-        targetRotationX += deltaY * 0.01;
-        
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
+        if (e.touches.length > 0) {
+            const deltaX = e.touches[0].clientX - touchStartX;
+            const deltaY = e.touches[0].clientY - touchStartY;
+            
+            targetRotationY += deltaX * 0.01;
+            targetRotationX += deltaY * 0.01;
+            
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }
     }, { passive: false });
 
     // Zoom controls
@@ -175,12 +196,14 @@ function init3DViewer() {
 
     // Handle window resize
     function onWindowResize() {
-        const newWidth = container.clientWidth;
-        const newHeight = container.clientHeight;
+        const newWidth = container.clientWidth || 300;
+        const newHeight = container.clientHeight || 300;
         
-        camera.aspect = newWidth / newHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(newWidth, newHeight);
+        if (newWidth > 0 && newHeight > 0) {
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
+        }
     }
 
     window.addEventListener('resize', onWindowResize);
