@@ -62,14 +62,16 @@ a {
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    gap: 3rem;
 }
 
 .logo-link {
     text-decoration: none;
     color: inherit;
     transition: all 0.3s ease;
+    margin-right: auto;
 }
 
 .logo-link:hover .logo {
@@ -435,9 +437,22 @@ a {
         align-items: center;
     }
 
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .logo-link {
+        margin-right: 0;
+        order: -1;
+    }
+
     .nav-menu {
         gap: 1rem;
         font-size: 0.9rem;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
     h2 {
